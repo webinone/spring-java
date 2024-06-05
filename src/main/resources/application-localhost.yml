@@ -1,0 +1,25 @@
+spring:
+  config:
+    activate:
+      on-profile: localhost
+
+  jpa:
+    open-in-view: false
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+      jdbc:
+        time_zone: UTC
+    generate-ddl: false
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/example_database
+    username: example_user
+    password: example_password
+
+
