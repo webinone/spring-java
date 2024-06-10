@@ -1,0 +1,10 @@
+###
+
+GET {{java-demo-server}}/api/v1/members/me
+Authorization: {{token-type}} {{access-token}}
+Content-Type: application/json
+
+###
+
+GET {{java-demo-server}}/api/v1/members?page=0&size=2
+Content-Type: application/json

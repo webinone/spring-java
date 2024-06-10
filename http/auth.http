@@ -1,3 +1,23 @@
 ### 회원가입
-POST {{java-demo-server}}/api/v1/signup
-###
+POST {{java-demo-server}}/api/v1/auth/signup
+Content-Type: application/json
+
+{
+  "email": "test@naver.com",
+  "password": "123123",
+  "regNo": "12312313",
+  "role": "ADMIN"
+}
+
+### 회원 로그인
+POST {{java-demo-server}}/api/v1/auth/signin
+Content-Type: application/json
+
+{
+  "email": "test@naver.com",
+  "password": "123123"
+}
+> {%
+ client.global.set("token-type", response.body.data.tokenType);
+ client.global.set("access-token", response.body.data.accessToken);
+ %}

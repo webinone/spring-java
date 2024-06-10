@@ -14,7 +14,7 @@
     <appender-ref ref="STDOUT"/>
   </root>
 
-  <springProfile name="localhost">
+  <springProfile name="localhost,test">
     <logger name="org.example.java_demo" level="DEBUG" />
   </springProfile>
 
