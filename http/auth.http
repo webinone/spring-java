@@ -3,7 +3,6 @@ POST {{java-demo-server}}/api/v1/auth/signup
 Content-Type: application/json
 
 {
-  "email": "test@naver.com",
   "password": "123123",
   "regNo": "12312313",
   "role": "ADMIN"

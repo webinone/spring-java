@@ -7,7 +7,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.java_demo.exception.ErrorCode;
 import org.example.java_demo.model.api.ApiResponse;
+import org.example.java_demo.model.api.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
@@ -27,12 +29,14 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     log.error("Not Authorize Request", accessDeniedException);
 
-    ApiResponse<Void> apiResponse = ApiResponse.error(accessDeniedException.getMessage());
+    ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.ACCESS_DENIED, accessDeniedException.getMessage());
+    var apiResponse = ApiResponse.error(errorResponse);
 
     String responseBody = objectMapper.writeValueAsString(apiResponse);
     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
     response.setStatus(HttpStatus.FORBIDDEN.value());
     response.setCharacterEncoding("UTF-8");
     response.getWriter().write(responseBody);
+
   }
 }

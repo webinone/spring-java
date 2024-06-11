@@ -7,7 +7,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.java_demo.exception.ErrorCode;
 import org.example.java_demo.model.api.ApiResponse;
+import org.example.java_demo.model.api.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
@@ -27,7 +29,8 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
     log.error("Not Autenticated Request", authException);
 
-    ApiResponse<Void> apiResponse = ApiResponse.error(authException.getMessage());
+    ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.UNAUTHORIZED, authException.getMessage());
+    var apiResponse = ApiResponse.error(errorResponse);
 
     String responseBody = objectMapper.writeValueAsString(apiResponse);
     response.setContentType(MediaType.APPLICATION_JSON_VALUE);

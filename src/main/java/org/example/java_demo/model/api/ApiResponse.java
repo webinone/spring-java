@@ -33,10 +33,10 @@ public class ApiResponse<T> {
         .build();
   }
 
-  public static <T> ApiResponse<T> error(String errorMessage) {
+  public static <T> ApiResponse<T> error(T data) {
     return ApiResponse.<T>builder()
         .status(ERROR)
-        .message(errorMessage)
+        .data(data)
         .build();
   }
 }

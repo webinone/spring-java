@@ -32,11 +32,14 @@ public class AuthService {
   private final AuthenticationManager authenticationManager;
 
   public void signUp(SignUpRequest request) {
+
     validDuplicateMemberByEmail(request.email());
 
-    var memberEntity = MemberEntity.create(request.email(), passwordEncoder.encode(request.password()), request.regNo(), request.role());
+    var memberEntity = MemberEntity.create(request.email(),
+                          passwordEncoder.encode(request.password()),
+                          request.regNo(), request.role());
     memberRepository.save(memberEntity);
-    System.out.println("finish!!");
+
   }
 
   public JwtTokenResponse signIn(SignInRequest request) {
@@ -54,7 +57,7 @@ public class AuthService {
   private void validDuplicateMemberByEmail(String email) {
     memberRepository.findByEmail(email).ifPresent(
         memberEntity -> {
-          throw new BusinessException(ErrorCode.MEMBER_NOT_FOUND);
+          throw new BusinessException(ErrorCode.MEMBER_ALREADY_EXISTS);
         });
   }
 
