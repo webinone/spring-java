@@ -6,5 +6,6 @@ Content-Type: application/json
 
 ###
 
-GET {{java-demo-server}}/api/v1/members?page=0&size=2
+GET {{java-demo-server}}/api/v1/members/me/signin?startDateTime=2024-01-01T00:00:00&endDateTime=2024-12-31T23:59:59&pageNumber=0&pageSize=2
+Authorization: {{token-type}} {{access-token}}
 Content-Type: application/json

@@ -1,22 +1,25 @@
 package org.example.java_demo.service;
 
+import static org.example.java_demo.model.convertor.MemberConverter.toDomain;
+
 import jakarta.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.example.java_demo.api.member.request.CreateMemberRequest;
 import org.example.java_demo.api.member.request.UpdateMemberRequest;
 import org.example.java_demo.exception.BusinessException;
 import org.example.java_demo.exception.ErrorCode;
-
+import org.example.java_demo.model.api.PageResponse;
 import org.example.java_demo.model.convertor.MemberConverter;
 import org.example.java_demo.model.domain.Member;
-import org.example.java_demo.model.entity.MemberEntity;
+import org.example.java_demo.model.domain.MemberSignInHistory;
+import org.example.java_demo.model.enums.RoleType;
 import org.example.java_demo.repository.MemberRepository;
+import org.example.java_demo.repository.MemberSignInHistoryRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import static org.example.java_demo.model.convertor.MemberConverter.toDomain;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +27,7 @@ import static org.example.java_demo.model.convertor.MemberConverter.toDomain;
 public class MemberService {
 
   private final MemberRepository memberRepository;
+  private final MemberSignInHistoryRepository memberSignInHistoryRepository;
 
 //  public Member createMember(CreateMemberRequest request) {
 //
@@ -52,6 +56,12 @@ public class MemberService {
         .map(MemberConverter::toDomain)
         .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
 
+  }
+
+  public PageResponse<MemberSignInHistory> readMemberSignInHistory(Long id, RoleType role, LocalDateTime startDateTime, LocalDateTime endDateTime, Pageable pageable) {
+    var memberSignInHistoryPage =  memberSignInHistoryRepository.findSearchCriteria(id, role, startDateTime, endDateTime, pageable);
+
+    return new PageResponse<>(memberSignInHistoryPage.getContent(), memberSignInHistoryPage.getTotalElements(), memberSignInHistoryPage.getTotalPages(), memberSignInHistoryPage.getNumber());
   }
 
   public List<Member> readMembers() {

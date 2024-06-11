@@ -36,6 +36,7 @@ public class AuthService {
 
     var memberEntity = MemberEntity.create(request.email(), passwordEncoder.encode(request.password()), request.regNo(), request.role());
     memberRepository.save(memberEntity);
+    System.out.println("finish!!");
   }
 
   public JwtTokenResponse signIn(SignInRequest request) {

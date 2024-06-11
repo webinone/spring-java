@@ -11,7 +11,7 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.MySQL8Dialect
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
       jdbc:
         time_zone: UTC
     generate-ddl: false
