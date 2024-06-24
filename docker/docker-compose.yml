@@ -1,19 +1,39 @@
 version: '3.8'
 
 services:
-  db:
+  mysql-db:
     image: mysql:8.0
     container_name: mysql-container
     restart: always
+    env_file:
+      - ./env/.env.${envMode}
     environment:
-      MYSQL_ROOT_PASSWORD: example_root_password
-      MYSQL_DATABASE: example_database
-      MYSQL_USER: example_user
-      MYSQL_PASSWORD: example_password
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
+
+  java-demo:
+    image: java_demo:1.1
+    build:
+      context: ../
+      dockerfile: Dockerfile
+      args:
+        envMode: ${envMode}
+    env_file:
+      - ./env/.env.${envMode}
+    ports:
+      - 8010:8010
+    depends_on:
+      - mysql-db
+    environment:
+      MYSQL_URL: jdbc:mysql://mysql-db:3306/${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
 
 volumes:
   db_data:
