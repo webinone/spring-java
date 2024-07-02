@@ -17,23 +17,36 @@ services:
     volumes:
       - db_data:/var/lib/mysql
 
-  java-demo:
-    image: java_demo:1.1
-    build:
-      context: ../
-      dockerfile: Dockerfile
-      args:
-        envMode: ${envMode}
-    env_file:
-      - ./env/.env.${envMode}
+  mongodb:
+    image: mongo
+    container_name: mongodb
     ports:
-      - 8010:8010
-    depends_on:
-      - mysql-db
+      - 27017:27017
     environment:
-      MYSQL_URL: jdbc:mysql://mysql-db:3306/${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    volumes:
+      - mongo_data:/data/db
+    hostname: mongodb
+
+#  java-demo:
+#    image: java_demo:1.1
+#    build:
+#      context: ../
+#      dockerfile: Dockerfile
+#      args:
+#        envMode: ${envMode}
+#    env_file:
+#      - ./env/.env.${envMode}
+#    ports:
+#      - 8010:8010
+#    depends_on:
+#      - mysql-db
+#    environment:
+#      MYSQL_URL: jdbc:mysql://mysql-db:3306/${MYSQL_DAABASE}
+#      MYSQL_USER: ${MYSQL_USER}
+#      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
 
 volumes:
   db_data:
+  mongo_data:
